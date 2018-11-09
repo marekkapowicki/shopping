@@ -7,7 +7,10 @@ class Item {
     private final ProductName productName;
     private final int quantity;
 
-    Item(ProductName productName, int quantity) {
+    static Item item(ProductName productName, int quantity){
+        return new Item(productName, quantity);
+    }
+    private Item(ProductName productName, int quantity) {
         this.productName = productName;
         this.quantity = quantity;
     }

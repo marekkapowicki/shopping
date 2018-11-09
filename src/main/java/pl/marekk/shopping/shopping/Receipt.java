@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static pl.marekk.shopping.shopping.product.domain.pricing.Price.standardPrice;
+import static pl.marekk.shopping.shopping.product.domain.pricing.Price.totalPrice;
 
 class Receipt {
 
@@ -16,7 +16,7 @@ class Receipt {
     static Receipt basketResult(List<ItemReceipt> itemReceipts) {
         Price total = itemReceipts.stream()
                 .map(ItemReceipt::getPrice)
-                .reduce(standardPrice(BigDecimal.ZERO), Price::plus);
+                .reduce(totalPrice(BigDecimal.ZERO), Price::plus);
         return new Receipt(itemReceipts, total);
     }
 
@@ -27,7 +27,14 @@ class Receipt {
 
     @Override
     public String toString() {
+        return printItems() + calculatedPrice.description();
+    }
+
+    private String printItems() {
+        if (itemReceipts == null || itemReceipts.isEmpty()) {
+            return "";
+        }
         return itemReceipts.stream()
-                .map(ItemReceipt::description).collect(Collectors.joining("\n")) + "\n" + calculatedPrice.description();
+                .map(ItemReceipt::description).collect(Collectors.joining("\n"))+ "\n";
     }
 }

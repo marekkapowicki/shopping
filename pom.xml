@@ -20,6 +20,7 @@
         <guava.version>27.0-jre</guava.version>
         <junit.version>4.12</junit.version>
         <commons-text.version>1.6</commons-text.version>
+        <assertj-core.version>3.11.1</assertj-core.version>
     </properties>
 
     <dependencies>
@@ -40,6 +41,13 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
 

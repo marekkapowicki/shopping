@@ -2,6 +2,7 @@ package pl.marekk.shopping.shopping.product.domain.pricing;
 
 import java.math.BigDecimal;
 
+import static java.math.BigDecimal.valueOf;
 import static pl.marekk.shopping.shopping.product.domain.pricing.Price.discountPrice;
 
 class DiscountStrategy implements PricingStrategy {
@@ -16,6 +17,6 @@ class DiscountStrategy implements PricingStrategy {
 
     @Override
     public Price calculatePrice(int unitNumber) {
-        return discountPrice(pricePerUnit, BigDecimal.TEN);
+        return discountPrice(pricePerUnit.multiply(valueOf(unitNumber)), discountRule.calculate(pricePerUnit, unitNumber));
     }
 }
