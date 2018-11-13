@@ -1,6 +1,5 @@
 package pl.marekk.shopping.shopping;
 
-
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -21,9 +20,7 @@ class Basket {
     }
 
     Receipt toReceipt() {
-        List<Item> groupedItems = groupItems(items);
-
-        List<ItemReceipt> results = groupedItems.stream()
+        List<ItemReceipt> results = items.stream()
                 .map(Item::toResult).collect(toList());
         return basketResult(results);
     }
@@ -33,6 +30,8 @@ class Basket {
                 .collect(groupingBy(Item::getProductName, summingInt(Item::getQuantity)))
                 .entrySet()
                 .stream()
-                .map(e -> item(e.getKey(), e.getValue())).collect(toList());
+                .map(e -> item(e.getKey(), e.getValue()))
+                .sorted(Item.comparator())
+                .collect(toList());
     }
 }

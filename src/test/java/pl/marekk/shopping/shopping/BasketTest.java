@@ -23,11 +23,19 @@ public class BasketTest {
     @Test
     public void shouldCalculate_440_forSampleBasket() {
         //given
-        List<Item> items = newArrayList(item(APPLE, 6), item(BANANA, 6),
-                item(PAPAYA, 3), item(APPLE, 4));
+        List<Item> items = newArrayList(
+                item(APPLE, 6),
+                item(BANANA, 6),
+                item(PAPAYA, 3),
+                item(APPLE, 4));
         //when
         Receipt receipt = basket(items).toReceipt();
         //then
-        assertThat(receipt.toString()).contains("Total price: 440.00");
+        assertThat(receipt.toString())
+                .contains("10xApple price: 250")
+                .contains("6xBanana price: 90")
+                .contains("3xPapaya price: 100 (regular price: 150)")
+                .contains("Total price: 440.00");
     }
+
 }
