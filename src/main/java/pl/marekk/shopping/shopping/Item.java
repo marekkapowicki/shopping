@@ -4,7 +4,12 @@ import pl.marekk.shopping.shopping.product.domain.ProductName;
 import pl.marekk.shopping.shopping.product.domain.Products;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summingInt;
+import static java.util.stream.Collectors.toList;
 
 class Item {
     private final ProductName productName;
@@ -18,14 +23,15 @@ class Item {
         this.quantity = quantity;
     }
 
-    ProductName getProductName() {
-        return productName;
+    static List<Item> groupItems(final List<Item> items) {
+        return items.stream()
+                .collect(groupingBy(Item::getProductName, summingInt(Item::getQuantity)))
+                .entrySet()
+                .stream()
+                .map(e -> item(e.getKey(), e.getValue()))
+                .sorted(Item.comparator())
+                .collect(toList());
     }
-
-    int getQuantity() {
-        return quantity;
-    }
-
     ItemReceipt toResult() {
         return new ItemReceipt(this, Products.findFor(productName).calculatePrice(quantity));
     }
@@ -33,6 +39,15 @@ class Item {
     String description() {
         return quantity + "x" + productName;
     }
+
+    private ProductName getProductName() {
+        return productName;
+    }
+
+    private int getQuantity() {
+        return quantity;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -47,7 +62,7 @@ class Item {
         return Objects.hash(productName);
     }
 
-    static Comparator<Item> comparator() {
+    private static Comparator<Item> comparator() {
         return Comparator.comparing(Item::getProductName);
     }
 }

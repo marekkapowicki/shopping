@@ -3,8 +3,9 @@ package pl.marekk.shopping.shopping;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static java.util.stream.Collectors.*;
-import static pl.marekk.shopping.shopping.Item.item;
+
+import static java.util.stream.Collectors.toList;
+import static pl.marekk.shopping.shopping.Item.groupItems;
 import static pl.marekk.shopping.shopping.Receipt.basketResult;
 
 class Basket {
@@ -25,13 +26,5 @@ class Basket {
         return basketResult(results);
     }
 
-    private static List<Item> groupItems(final List<Item> items) {
-        return items.stream()
-                .collect(groupingBy(Item::getProductName, summingInt(Item::getQuantity)))
-                .entrySet()
-                .stream()
-                .map(e -> item(e.getKey(), e.getValue()))
-                .sorted(Item.comparator())
-                .collect(toList());
-    }
+
 }
